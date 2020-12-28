@@ -4,6 +4,7 @@
   "Author": "RandyKnapp, Desperationfighter, Metious",
   "Version": "1.2.0",
   "Enable": true,
+  "Game": "BelowZero",
   "Dependencies": [ "SMLHelper" ],
   "AssemblyName": "LongLockerNames_BZ.dll"
 }
