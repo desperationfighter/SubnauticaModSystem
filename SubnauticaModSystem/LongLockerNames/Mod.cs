@@ -1,87 +1,46 @@
-﻿using Common.Utility;
-using Harmony;
-using System;
+﻿using System;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using UnityEngine;
+
+//for Assembly info
+using System.Reflection;
+//Loading Harmony for Patching
+using HarmonyLib;
+//Loading QMod as Base
+using QModManager.API.ModLoading;
+//Ingame Slider
+using SMLHelper.V2.Handlers;
+
+/*
+xcopy $(TargetPath) D:\SteamLibrary\steamapps\common\Subnautica\QMods\$(ProjectName)\ /q /y
+xcopy $(ProjectDir)mod.json D:\SteamLibrary\steamapps\common\Subnautica\QMods\$(ProjectName)\ /q /y
+xcopy $(ProjectDir)Assets D:\SteamLibrary\steamapps\common\Subnautica\QMods\$(ProjectName)\Assets\ /q /y /i
+
+xcopy $(TargetPath) D:\EpicGames\Subnautica\QMods\$(ProjectName)\ /q /y
+xcopy $(ProjectDir)mod.json D:\EpicGames\Subnautica\QMods\$(ProjectName)\ /q /y
+xcopy $(ProjectDir)Assets D:\EpicGames\Subnautica\QMods\$(ProjectName)\Assets\ /q /y /i
+*/
 
 namespace LongLockerNames
 {
-	static class Mod
+	[QModCore]
+	public static class Mod
 	{
-		public static Config config;
-		private static string modDirectory;
+		private static Assembly myAssembly = Assembly.GetExecutingAssembly();
+		private static string ModPath = Path.GetDirectoryName(myAssembly.Location);
+		internal static string AssetsFolder = Path.Combine(ModPath, "Assets");
+		internal static Config Config { get; private set; }
 
-		public static void Patch(string modDirectory = null)
-		{
-			Mod.modDirectory = modDirectory ?? "Subnautica_Data/Managed";
-			LoadConfig();
+		[QModPatch]
+		public static void Patch()
+        {
+			Config = OptionsPanelHandler.RegisterModOptions<Config>();
+			IngameMenuHandler.RegisterOnSaveEvent(Config.Save);
 
-			HarmonyInstance harmony = HarmonyInstance.Create("com.LongLockerNames.mod");
-			harmony.PatchAll(Assembly.GetExecutingAssembly());
+			Harmony.CreateAndPatchAll(myAssembly, $"RandyKnapp_{myAssembly.GetName().Name}");
 
-			Logger.Log("Patched");
-		}
-
-		public static string GetModPath()
-		{
-			return Environment.CurrentDirectory + "/" + modDirectory;
-		}
-
-		public static string GetAssetPath(string filename)
-		{
-			return GetModPath() + "/Assets/" + filename;
-		}
-
-		private static string GetModInfoPath()
-		{
-			return GetModPath() + "/mod.json";
-		}
-
-		private static void LoadConfig()
-		{
-			string modInfoPath = GetModInfoPath();
-
-			if (!File.Exists(modInfoPath))
-			{
-				config = new Config();
-				return;
-			}
-
-			var modInfoObject = JSON.Parse(File.ReadAllText(modInfoPath));
-			string configJson = modInfoObject["Config"].ToString();
-			config = JsonUtility.FromJson<Config>(configJson);
-			ValidateConfig();
-		}
-
-		private static void ValidateConfig()
-		{
-			Config defaultConfig = new Config();
-			if (config == null)
-			{
-				config = defaultConfig;
-				return;
-			}
-
-			ValidateConfigValue("SmallLockerTextLimit", 1, 500, defaultConfig);
-			ValidateConfigValue("SignTextLimit", 1, 500, defaultConfig);
-		}
-
-		private static void ValidateConfigValue<T>(string field, T min, T max, Config defaultConfig) where T : IComparable
-		{
-			var fieldInfo = typeof(Config).GetField(field, BindingFlags.Public | BindingFlags.Instance);
-			T value = (T)fieldInfo.GetValue(config);
-			if (value.CompareTo(min) < 0 || value.CompareTo(max) > 0)
-			{
-				Logger.Log("Config value for '{0}' ({1}) was not valid. Must be between {2} and {3}",
-					field,
-					value,
-					min,
-					max
-				);
-				fieldInfo.SetValue(config, fieldInfo.GetValue(defaultConfig));
-			}
+			QModManager.Utility.Logger.Log(QModManager.Utility.Logger.Level.Info, "LongLockerNames Patched");
 		}
 
 		public static void PrintObject(GameObject obj, string indent = "")

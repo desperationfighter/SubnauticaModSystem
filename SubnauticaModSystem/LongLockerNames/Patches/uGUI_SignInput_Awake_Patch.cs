@@ -1,7 +1,10 @@
-﻿using Harmony;
-using System.Linq;
+﻿using System.Linq;
+using System.Collections.Generic;
+using HarmonyLib;
 using UnityEngine;
 using UnityEngine.UI;
+
+//Color Picker Updated by Metious
 
 namespace LongLockerNames.Patches
 {
@@ -9,6 +12,7 @@ namespace LongLockerNames.Patches
 	[HarmonyPatch("OnDeselect")]
 	public static class uGUI_SignInput_OnDeselect_Patch
 	{
+		[HarmonyPostfix]
 		private static void Postfix(uGUI_SignInput __instance)
 		{
 			foreach (Transform child in __instance.transform)
@@ -27,7 +31,8 @@ namespace LongLockerNames.Patches
 	{
 		private static Button buttonPrefab;
 		private const float TextFieldHeight = 600;
-
+		
+		[HarmonyPostfix]
 		private static void Postfix(uGUI_SignInput __instance)
 		{
 			if (IsOnSmallLocker(__instance))
@@ -57,7 +62,10 @@ namespace LongLockerNames.Patches
 		private static void PatchSmallLocker(uGUI_SignInput __instance)
 		{
 			__instance.inputField.lineType = InputField.LineType.MultiLineNewline;
-			__instance.inputField.characterLimit = Mod.config.SmallLockerTextLimit;
+			//__instance.inputField.lineType = TMPro.TMP_InputField.LineType.MultiLineNewline;
+			//The Multiline Feature seems to be broken. It was switched to the TextMeshPro Libary and after this it worked agein.
+			//For now waiting for the experimental Branch to get Stable to see if this can be fixed on SN too like BZ.
+			__instance.inputField.characterLimit = Mod.Config.SmallLockerTextLimit;
 
 			var rt = __instance.inputField.transform as RectTransform;
 			RectTransformExtensions.SetSize(rt, rt.rect.width, TextFieldHeight);
@@ -67,11 +75,14 @@ namespace LongLockerNames.Patches
 			RectTransformExtensions.SetSize(rt, rt.rect.width, TextFieldHeight);
 
 			__instance.inputField.textComponent.alignment = TextAnchor.MiddleCenter;
+			//__instance.inputField.textComponent.alignment = TMPro.TextAlignmentOptions.Center;
+			//The TextAnchor Feature seems to be broken. It was switched to the TextMeshPro Libary and after this it worked agein.
+			//For now waiting for the experimental Branch to get Stable to see if this can be fixed on SN too like BZ.
 
-			if (Mod.config.ColorPickerOnLockers)
+			if (Mod.Config.ColorPickerOnLockers)
 			{
 				var currentButton = __instance.transform.GetChild(1).GetComponent<Button>();
-				var height = Mod.config.ExtraColorsOnLockers ? 1200 : 210;
+				var height = Mod.Config.ExtraColorsOnLockers ? 1200 : 210;
 				AddColorPickerSystem(__instance, currentButton, "LOCKER", -20, height);
 			}
 		}
@@ -100,7 +111,9 @@ namespace LongLockerNames.Patches
 					picker.SetActive(!picker.activeSelf);
 				});
 
-				__instance.colorizedElements = __instance.colorizedElements.Add(picker.GetComponentInChildren<Text>()).ToArray();
+				var colorizedElements = __instance.colorizedElements == null ? new List<Graphic>() : __instance.colorizedElements.ToList();
+				colorizedElements.Add(picker.GetComponentInChildren<Text>());
+				__instance.colorizedElements = colorizedElements.ToArray();
 			}
 		}
 
@@ -188,12 +201,12 @@ namespace LongLockerNames.Patches
 
 		private static void PatchSign(uGUI_SignInput __instance)
 		{
-			__instance.inputField.characterLimit = Mod.config.SignTextLimit;
+			__instance.inputField.characterLimit = Mod.Config.SignTextLimit;
 
-			if (Mod.config.ColorPickerOnSigns)
+			if (Mod.Config.ColorPickerOnSigns)
 			{
 				var currentButton = __instance.transform.GetChild(0).GetChild(8).GetComponent<Button>();
-				var height = Mod.config.ExtraColorsOnSigns ? 1200 : 210 + 55;
+				var height = Mod.Config.ExtraColorsOnSigns ? 1200 : 210 + 55;
 				AddColorPickerSystem(__instance, currentButton, "SIGN", -100, height);
 			}
 		}
@@ -202,11 +215,11 @@ namespace LongLockerNames.Patches
 		{
 			var originalColorCount = __instance.colors.Length;
 
-			if (originalColorCount == 7 && !Mod.config.ExtraColorsOnLockers)
+			if (originalColorCount == 7 && !Mod.Config.ExtraColorsOnLockers)
 			{
 				return;
 			}
-			if (originalColorCount == 8 && !Mod.config.ExtraColorsOnSigns)
+			if (originalColorCount == 8 && !Mod.Config.ExtraColorsOnSigns)
 			{
 				return;
 			}
@@ -341,7 +354,10 @@ namespace LongLockerNames.Patches
 
 			if (originalColorCount == 7)
 			{
-				newColors = newColors.Add(rgb(47, 79, 79)).ToArray();
+				var _newColors = newColors == null ? new List<Color>() : newColors.ToList();
+				_newColors.Add(rgb(47, 79, 79));
+
+				newColors = _newColors.ToArray();
 			}
 
 			__instance.colors = __instance.colors.Concat(newColors).ToArray();
