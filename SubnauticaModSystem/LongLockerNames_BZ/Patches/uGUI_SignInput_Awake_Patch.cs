@@ -4,7 +4,7 @@ using HarmonyLib;
 using UnityEngine;
 using UnityEngine.UI;
 
-//Color Picker Updated by Metious
+//Color Picker Partly Updated by Metious
 
 namespace LongLockerNames_BZ.Patches
 {
@@ -150,7 +150,7 @@ namespace LongLockerNames_BZ.Patches
 
 			var text = new GameObject("ExampleText", typeof(RectTransform)).AddComponent<Text>();
 			text.text = label;
-			//text.font = __instance.inputField.textComponent.font;
+			//text.font =  __instance.inputField.textComponent.font; //doesn´t work anymore. How to replace ?
 			text.fontSize = (int)(__instance.inputField.textComponent.fontSize + 12);
 			text.fontStyle = (FontStyle)__instance.inputField.textComponent.fontStyle;
 			text.color = __instance.inputField.textComponent.color;
