@@ -43,6 +43,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TorpedoImprovements", "Torp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HudConfig", "HudConfig\HudConfig.csproj", "{2EBF18DB-437E-4A9A-A03C-06770A3F9CB6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LongLockerNames_BZ", "LongLockerNames_BZ\LongLockerNames_BZ.csproj", "{9768C310-DB0A-4A2B-863A-2A977796AF4B}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Common\Common.projitems*{03b89974-4ea6-4cd4-8c9f-c039eb81de5f}*SharedItemsImports = 4
@@ -182,6 +184,12 @@ Global
 		{2EBF18DB-437E-4A9A-A03C-06770A3F9CB6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2EBF18DB-437E-4A9A-A03C-06770A3F9CB6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2EBF18DB-437E-4A9A-A03C-06770A3F9CB6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9768C310-DB0A-4A2B-863A-2A977796AF4B}.Debug_Autosort|Any CPU.ActiveCfg = Debug|Any CPU
+		{9768C310-DB0A-4A2B-863A-2A977796AF4B}.Debug_Autosort|Any CPU.Build.0 = Debug|Any CPU
+		{9768C310-DB0A-4A2B-863A-2A977796AF4B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9768C310-DB0A-4A2B-863A-2A977796AF4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9768C310-DB0A-4A2B-863A-2A977796AF4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9768C310-DB0A-4A2B-863A-2A977796AF4B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
