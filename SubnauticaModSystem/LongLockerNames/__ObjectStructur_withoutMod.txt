@@ -1,0 +1,82 @@
+﻿SN without Mod
+
+uGUI_SignInput
+
+asdf[[UI]]:
+asdf{
+asdf  Components:
+asdf  {
+asdf    (UnityEngine.RectTransform)
+asdf    (UnityEngine.Canvas)
+asdf    Name:  (UnityEngine.GameObject)
+eventCamera: MainCamera (UnityEngine.Camera)
+sortOrderPriority: -2147483648
+renderOrderPriority: -2147483648
+asdf    (uG_SignInput)
+asdf    (uG_NavigableControlGrid)
+asdf  }
+asdf  Children:
+asdf  {
+asdf    [[InputField]]:
+asdf    {
+asdf      Components:
+asdf      {
+asdf        (UnityEngine.RectTransform)
+asdf        (UnityEngine.CanvasRenderer)
+asdf        (uGUI_)
+asdf      }
+asdf      Children:
+asdf      {
+asdf        [[InputField Input Caret]]:
+asdf        {
+asdf          Components:
+asdf          {
+asdf            (UnityEngine.RectTransform)
+asdf            (UnityEngine.CanvasRenderer)
+asdf            (UnityEngine.UI.LayoutElement)
+asdf          }
+asdf          Children:
+asdf          {
+asdf          }
+asdf        }
+asdf        [[Text]]:
+asdf        {
+asdf          Components:
+asdf          {
+asdf            (UnityEngine.RectTransform)
+asdf            (UnityEngine.CanvasRenderer)
+asdf            (UnityEngine.UI.)
+asdf            (UnityEngine.UI.ContentSizeFitter)
+asdf          }
+asdf          Children:
+asdf          {
+asdf          }
+asdf        }
+asdf      }
+asdf    }
+asdf    [[ColorSelector]]:
+asdf    {
+asdf      Components:
+asdf      {
+asdf        (UnityEngine.RectTransform)
+asdf        (UnityEngine.UI.Button)
+asdf        (UnityEngine.UI.LayoutElement)
+asdf      }
+asdf      Children:
+asdf      {
+asdf        [[Indicator]]:
+asdf        {
+asdf          Components:
+asdf          {
+asdf            (UnityEngine.RectTransform)
+asdf            (UnityEngine.CanvasRenderer)
+asdf            (UnityEngine.UI.Image)
+asdf          }
+asdf          Children:
+asdf          {
+asdf          }
+asdf        }
+asdf      }
+asdf    }
+asdf  }
+asdf}
