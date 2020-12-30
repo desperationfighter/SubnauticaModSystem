@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using HarmonyLib;
 using UnityEngine;
 using UnityEngine.UI;
+//just for test
+using System;
 
 //Color Picker Partly Updated by Metious
 
@@ -35,6 +37,9 @@ namespace LongLockerNames_BZ.Patches
 		[HarmonyPostfix]
 		private static void Postfix(uGUI_SignInput __instance)
 		{
+			Mod.PrintObject(__instance.gameObject,"asdf");
+
+			// /*
 			if (IsOnSmallLocker(__instance))
 			{
 				AddColors(__instance);
@@ -45,6 +50,7 @@ namespace LongLockerNames_BZ.Patches
 				AddColors(__instance);
 				PatchSign(__instance);
 			}
+			// */
 		}
 
 		private static bool IsOnSmallLocker(uGUI_SignInput __instance)
@@ -61,7 +67,6 @@ namespace LongLockerNames_BZ.Patches
 
 		private static void PatchSmallLocker(uGUI_SignInput __instance)
 		{
-			//__instance.inputField.lineType = InputField.LineType.MultiLineNewline;
 			__instance.inputField.lineType = TMPro.TMP_InputField.LineType.MultiLineNewline;
 			__instance.inputField.characterLimit = Mod.Config.SmallLockerTextLimit;
 
@@ -72,13 +77,13 @@ namespace LongLockerNames_BZ.Patches
 			rt = __instance.inputField.textComponent.transform as RectTransform;
 			RectTransformExtensions.SetSize(rt, rt.rect.width, TextFieldHeight);
 
-			//__instance.inputField.textComponent.alignment = TextAnchor.MiddleCenter;
 			__instance.inputField.textComponent.alignment = TMPro.TextAlignmentOptions.Center;
 
 			if (Mod.Config.ColorPickerOnLockers)
 			{
 				var currentButton = __instance.transform.GetChild(1).GetComponent<Button>();
 				var height = Mod.Config.ExtraColorsOnLockers ? 1200 : 210;
+				QModManager.Utility.Logger.Log(QModManager.Utility.Logger.Level.Warn, "Before cast AddColorPickerSystem");
 				AddColorPickerSystem(__instance, currentButton, "LOCKER", -20, height);
 			}
 		}
@@ -89,6 +94,7 @@ namespace LongLockerNames_BZ.Patches
 			{
 				if (buttonPrefab == null)
 				{
+					QModManager.Utility.Logger.Log(QModManager.Utility.Logger.Level.Warn, "Before Create Button Prefab");
 					CreateButtonPrefab();
 				}
 
@@ -108,26 +114,44 @@ namespace LongLockerNames_BZ.Patches
 				});
 
 				var colorizedElements = __instance.colorizedElements == null ? new List<Graphic>() : __instance.colorizedElements.ToList();
-				colorizedElements.Add(picker.GetComponentInChildren<Text>());
+				colorizedElements.Add(picker.GetComponentInChildren<TMPro.TMP_Text>());
 				__instance.colorizedElements = colorizedElements.ToArray();
 			}
 		}
 
 		private static void CreateButtonPrefab()
 		{
+			QModManager.Utility.Logger.Log(QModManager.Utility.Logger.Level.Warn, "InLine CreateButton Prefab - DEV Step 01");
 			GameObject smallLocker = Resources.Load<GameObject>("Submarine/Build/SmallLocker");
+			QModManager.Utility.Logger.Log(QModManager.Utility.Logger.Level.Warn, "InLine CreateButton Prefab - DEV Step 02");
+			Mod.PrintObject(smallLocker, "asdf1234"); //Thats the Problem for the Null Reference Error
+			QModManager.Utility.Logger.Log(QModManager.Utility.Logger.Level.Warn, "InLine CreateButton Prefab - DEV Step 02-01");
 			var signInput = smallLocker.GetComponentInChildren<uGUI_SignInput>();
-			var original = signInput.transform.GetChild(1).gameObject.GetComponent<Button>();
+			QModManager.Utility.Logger.Log(QModManager.Utility.Logger.Level.Warn, "InLine CreateButton Prefab - DEV Step 03");
+			//Console.WriteLine("asdfasdf" + signInput.transform.childCount);
+			//Console.WriteLine("asdfasdf" + signInput.transform.GetChildCount());
+			var original = signInput.transform.GetChild(1).gameObject.GetComponent<Button>(); //Wait if on BZ there is a object child change maybe wrong indicator ? No Problem occurs before
+			QModManager.Utility.Logger.Log(QModManager.Utility.Logger.Level.Warn, "InLine CreateButton Prefab - DEV Step 04");
 			buttonPrefab = GameObject.Instantiate(original);
+			QModManager.Utility.Logger.Log(QModManager.Utility.Logger.Level.Warn, "InLine CreateButton Prefab - DEV Step 05");
 
+			/*
+			QModManager.Utility.Logger.Log(QModManager.Utility.Logger.Level.Warn, "InLine CreateButton Prefab - DEV Step 06");
 			var go = buttonPrefab.gameObject;
+			QModManager.Utility.Logger.Log(QModManager.Utility.Logger.Level.Warn, "InLine CreateButton Prefab - DEV Step 07");
 			GameObject.DestroyImmediate(buttonPrefab);
+			QModManager.Utility.Logger.Log(QModManager.Utility.Logger.Level.Warn, "InLine CreateButton Prefab - DEV Step 08");
 			buttonPrefab = go.AddComponent<Button>();
+			QModManager.Utility.Logger.Log(QModManager.Utility.Logger.Level.Warn, "InLine CreateButton Prefab - DEV Step 09");
 			buttonPrefab.transition = original.transition;
+			QModManager.Utility.Logger.Log(QModManager.Utility.Logger.Level.Warn, "InLine CreateButton Prefab - DEV Step 10");
 			buttonPrefab.targetGraphic = go.GetComponentInChildren<Image>();
+			QModManager.Utility.Logger.Log(QModManager.Utility.Logger.Level.Warn, "InLine CreateButton Prefab - DEV Step 111");
 			buttonPrefab.colors = original.colors;
-
+			QModManager.Utility.Logger.Log(QModManager.Utility.Logger.Level.Warn, "InLine CreateButton Prefab - DEV Step 12");
 			go.SetActive(true);
+			QModManager.Utility.Logger.Log(QModManager.Utility.Logger.Level.Warn, "InLine CreateButton Prefab - DEV Step 13");
+			*/
 		}
 
 		private static GameObject AddColorPicker(uGUI_SignInput __instance, string label, int xOffset, int pickerHeight)
@@ -148,22 +172,13 @@ namespace LongLockerNames_BZ.Patches
 			layout.padding = new RectOffset(20, 20, 130, 20);
 			layout.spacing = new Vector2(-5, -5);
 
-			var text = new GameObject("ExampleText", typeof(RectTransform)).AddComponent<Text>();
+			var text = new GameObject("ExampleText", typeof(RectTransform)).AddComponent<TMPro.TMP_Text>();
 			text.text = label;
-			//text.font =  __instance.inputField.textComponent.font; //doesn´t work anymore. How to replace ?
-			text.fontSize = (int)(__instance.inputField.textComponent.fontSize + 12);
-			text.fontStyle = (FontStyle)__instance.inputField.textComponent.fontStyle;
-			text.color = __instance.inputField.textComponent.color;
-			text.alignment = TextAnchor.MiddleCenter;
-
-			/*
-			text.text = label;
-			text.font = __instance.inputField.textComponent.font;
+			text.font =  __instance.inputField.textComponent.font;
 			text.fontSize = __instance.inputField.textComponent.fontSize + 12;
 			text.fontStyle = __instance.inputField.textComponent.fontStyle;
 			text.color = __instance.inputField.textComponent.color;
-			text.alignment = TextAnchor.MiddleCenter;
-			*/
+			text.alignment = TMPro.TextAlignmentOptions.Center;
 
 			var l = text.gameObject.AddComponent<LayoutElement>();
 			l.ignoreLayout = true;
@@ -190,6 +205,7 @@ namespace LongLockerNames_BZ.Patches
 				le.minWidth = le.minHeight = 60;
 
 				var button = colorButton.AddComponent<Button>();
+				
 				button.transition = buttonPrefab.transition;
 				button.colors = buttonPrefab.colors;
 

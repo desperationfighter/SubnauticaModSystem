@@ -35,6 +35,9 @@ namespace LongLockerNames.Patches
 		[HarmonyPostfix]
 		private static void Postfix(uGUI_SignInput __instance)
 		{
+			Mod.PrintObject(__instance.gameObject, "asdf");
+
+			// /*
 			if (IsOnSmallLocker(__instance))
 			{
 				AddColors(__instance);
@@ -45,6 +48,7 @@ namespace LongLockerNames.Patches
 				AddColors(__instance);
 				PatchSign(__instance);
 			}
+			// */
 		}
 
 		private static bool IsOnSmallLocker(uGUI_SignInput __instance)

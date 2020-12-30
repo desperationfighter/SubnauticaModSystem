@@ -1,0 +1,86 @@
+﻿asdf[[UI]]:
+asdf{
+asdf  Components:
+asdf  {
+asdf    (UnityEngine.RectTransform)
+asdf    (UnityEngine.Canvas)
+asdf    Name:  (UnityEngine.GameObject)
+eventCamera: MainCamera (UnityEngine.Camera)
+sortOrderPriority: -2147483648
+renderOrderPriority: -2147483648
+asdf    (uG_SignInput)
+asdf    (uG_NavigableControlGrid)
+asdf  }
+asdf  Children:
+asdf  {
+asdf    [[InputField]]:
+asdf    {
+asdf      Components:
+asdf      {
+asdf        (UnityEngine.RectTransform)
+asdf        (UnityEngine.CanvasRenderer)
+asdf        (uGUI_)
+asdf      }
+asdf      Children:
+asdf      {
+asdf        [[Text]]:
+asdf        {
+asdf          Components:
+asdf          {
+asdf            (UnityEngine.RectTransform)
+asdf            (UnityEngine.CanvasRenderer)
+asdf            (TMPro.MeshProUGUI)
+asdf            (UnityEngine.UI.ContentSizeFitter)
+asdf          }
+asdf          Children:
+asdf          {
+asdf          }
+asdf        }
+asdf      }
+asdf    }
+asdf    [[ColorSelector]]:
+asdf    {
+asdf      Components:
+asdf      {
+asdf        (UnityEngine.RectTransform)
+asdf        (UnityEngine.UI.Button)
+asdf        (UnityEngine.UI.LayoutElement)
+asdf      }
+asdf      Children:
+asdf      {
+asdf        [[Indicator]]:
+asdf        {
+asdf          Components:
+asdf          {
+asdf            (UnityEngine.RectTransform)
+asdf            (UnityEngine.CanvasRenderer)
+asdf            (UnityEngine.UI.Image)
+asdf          }
+asdf          Children:
+asdf          {
+asdf          }
+asdf        }
+asdf      }
+asdf    }
+asdf  }
+asdf}
+[LongLockerNames_BZ:WARN] Before cast AddColorPickerSystem
+[LongLockerNames_BZ:WARN] Before Create Button Prefab
+[LongLockerNames_BZ:WARN] InLine CreateButton Prefab - DEV Step 01
+[LongLockerNames_BZ:WARN] InLine CreateButton Prefab - DEV Step 02
+NullReferenceException: Object reference not set to an instance of an object
+  at LongLockerNames_BZ.Mod.PrintObject (UnityEngine.GameObject obj, System.String indent) [0x00001] in <43151d9953224df190f99dfbd530f626>:0 
+  at LongLockerNames_BZ.Patches.uGUI_SignInput_Awake_Patch.CreateButtonPrefab () [0x00028] in <43151d9953224df190f99dfbd530f626>:0 
+  at LongLockerNames_BZ.Patches.uGUI_SignInput_Awake_Patch.AddColorPickerSystem (uGUI_SignInput __instance, UnityEngine.UI.Button currentButton, System.String label, System.Int32 xOffset, System.Int32 pickerHeight) [0x00036] in <43151d9953224df190f99dfbd530f626>:0 
+  at LongLockerNames_BZ.Patches.uGUI_SignInput_Awake_Patch.PatchSmallLocker (uGUI_SignInput __instance) [0x000f4] in <43151d9953224df190f99dfbd530f626>:0 
+  at LongLockerNames_BZ.Patches.uGUI_SignInput_Awake_Patch.Postfix (uGUI_SignInput __instance) [0x00024] in <43151d9953224df190f99dfbd530f626>:0 
+  at (wrapper dynamic-method) uGUI_SignInput.DMD<uGUI_SignInput::Awake>(uGUI_SignInput)
+UnityEngine.GameObject:SetActive(Boolean)
+LargeWorldStreamer:OnGlobalRootLoaded(GameObject)
+<LoadGlobalRootAsync>d__230:MoveNext()
+SystemExtensions:SafeMoveNext(IEnumerator)
+SystemExtensions:SafeMoveNext(IEnumerator, String)
+UWE.PumpCoroutineStateMachine:MoveNext()
+PooledStateMachine`1:MoveNext()
+UnityEngine.SetupCoroutine:InvokeMoveNext(IEnumerator, IntPtr)
+ 

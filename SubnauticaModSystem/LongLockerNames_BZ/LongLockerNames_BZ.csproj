@@ -82,6 +82,7 @@
   <ItemGroup>
     <Content Include="Assets\color_down.png" />
     <Content Include="Assets\color_up.png" />
+    <Content Include="Error_to_work_on.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
