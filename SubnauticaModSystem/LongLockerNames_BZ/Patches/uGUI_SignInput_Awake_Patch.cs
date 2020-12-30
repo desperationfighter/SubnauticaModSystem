@@ -37,7 +37,31 @@ namespace LongLockerNames_BZ.Patches
 		[HarmonyPostfix]
 		private static void Postfix(uGUI_SignInput __instance)
 		{
+            /*
+			try
+            {
+				GameObject DevSmalllocker = GameObject.Find("/SmallLocker");
+				Mod.PrintObject(DevSmalllocker, "DevSmalllocker");
+            }
+			catch
+            {
+				QModManager.Utility.Logger.Log(QModManager.Utility.Logger.Level.Warn, "Smallocker DEV 01");
+			}
+
+			try
+			{
+				foreach (GameObject go in Resources.FindObjectsOfTypeAll(typeof(GameObject)) as GameObject[])
+				{
+					Mod.PrintObject(go, "AllObjectFinder");
+				}
+			}
+			catch
+			{
+				QModManager.Utility.Logger.Log(QModManager.Utility.Logger.Level.Warn, "Smallocker DEV 02");
+			}
+
 			Mod.PrintObject(__instance.gameObject,"asdf");
+			*/
 
 			// /*
 			if (IsOnSmallLocker(__instance))
@@ -121,6 +145,7 @@ namespace LongLockerNames_BZ.Patches
 
 		private static void CreateButtonPrefab()
 		{
+
 			QModManager.Utility.Logger.Log(QModManager.Utility.Logger.Level.Warn, "InLine CreateButton Prefab - DEV Step 01");
 			GameObject smallLocker = Resources.Load<GameObject>("Submarine/Build/SmallLocker");
 			QModManager.Utility.Logger.Log(QModManager.Utility.Logger.Level.Warn, "InLine CreateButton Prefab - DEV Step 02");
