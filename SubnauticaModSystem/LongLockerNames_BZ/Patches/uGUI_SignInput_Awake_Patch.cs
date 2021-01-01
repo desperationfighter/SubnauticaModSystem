@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 //just for test
 using System;
+using UWE;
 
 //Color Picker Partly Updated by Metious
 
@@ -145,38 +146,44 @@ namespace LongLockerNames_BZ.Patches
 
 		private static void CreateButtonPrefab()
 		{
+			GameObject prefab = null;
+			string classId = CraftData.GetClassIdForTechType(TechType.SmallLocker);
 
-			QModManager.Utility.Logger.Log(QModManager.Utility.Logger.Level.Warn, "InLine CreateButton Prefab - DEV Step 01");
-			GameObject smallLocker = Resources.Load<GameObject>("Submarine/Build/SmallLocker");
-			QModManager.Utility.Logger.Log(QModManager.Utility.Logger.Level.Warn, "InLine CreateButton Prefab - DEV Step 02");
-			Mod.PrintObject(smallLocker, "asdf1234"); //Thats the Problem for the Null Reference Error
-			QModManager.Utility.Logger.Log(QModManager.Utility.Logger.Level.Warn, "InLine CreateButton Prefab - DEV Step 02-01");
-			var signInput = smallLocker.GetComponentInChildren<uGUI_SignInput>();
-			QModManager.Utility.Logger.Log(QModManager.Utility.Logger.Level.Warn, "InLine CreateButton Prefab - DEV Step 03");
-			//Console.WriteLine("asdfasdf" + signInput.transform.childCount);
-			//Console.WriteLine("asdfasdf" + signInput.transform.GetChildCount());
-			var original = signInput.transform.GetChild(1).gameObject.GetComponent<Button>(); //Wait if on BZ there is a object child change maybe wrong indicator ? No Problem occurs before
-			QModManager.Utility.Logger.Log(QModManager.Utility.Logger.Level.Warn, "InLine CreateButton Prefab - DEV Step 04");
-			buttonPrefab = GameObject.Instantiate(original);
-			QModManager.Utility.Logger.Log(QModManager.Utility.Logger.Level.Warn, "InLine CreateButton Prefab - DEV Step 05");
+			string logtmp = ("InLine CreateButton Prefab - MrPurple6411 way - " + classId);
+			QModManager.Utility.Logger.Log(QModManager.Utility.Logger.Level.Warn, logtmp);
 
-			/*
-			QModManager.Utility.Logger.Log(QModManager.Utility.Logger.Level.Warn, "InLine CreateButton Prefab - DEV Step 06");
-			var go = buttonPrefab.gameObject;
-			QModManager.Utility.Logger.Log(QModManager.Utility.Logger.Level.Warn, "InLine CreateButton Prefab - DEV Step 07");
-			GameObject.DestroyImmediate(buttonPrefab);
-			QModManager.Utility.Logger.Log(QModManager.Utility.Logger.Level.Warn, "InLine CreateButton Prefab - DEV Step 08");
-			buttonPrefab = go.AddComponent<Button>();
-			QModManager.Utility.Logger.Log(QModManager.Utility.Logger.Level.Warn, "InLine CreateButton Prefab - DEV Step 09");
-			buttonPrefab.transition = original.transition;
-			QModManager.Utility.Logger.Log(QModManager.Utility.Logger.Level.Warn, "InLine CreateButton Prefab - DEV Step 10");
-			buttonPrefab.targetGraphic = go.GetComponentInChildren<Image>();
-			QModManager.Utility.Logger.Log(QModManager.Utility.Logger.Level.Warn, "InLine CreateButton Prefab - DEV Step 111");
-			buttonPrefab.colors = original.colors;
-			QModManager.Utility.Logger.Log(QModManager.Utility.Logger.Level.Warn, "InLine CreateButton Prefab - DEV Step 12");
-			go.SetActive(true);
-			QModManager.Utility.Logger.Log(QModManager.Utility.Logger.Level.Warn, "InLine CreateButton Prefab - DEV Step 13");
-			*/
+			string filename;
+			if (PrefabDatabase.TryGetPrefabFilename(classId, out filename))
+			{
+				QModManager.Utility.Logger.Log(QModManager.Utility.Logger.Level.Warn, "InLine CreateButton Prefab - MrPurple6411 way - trygetprefabfilename");
+				prefab = Resources.Load<GameObject>(filename);
+				Mod.PrintObject(prefab, "asdf1234");
+			}
+			else
+            {
+				QModManager.Utility.Logger.Log(QModManager.Utility.Logger.Level.Warn, "InLine CreateButton Prefab - MrPurple6411 way - bad 1");
+			}
+
+			if (prefab != null)
+			{
+				/*
+								GameObject smallLocker = Resources.Load<GameObject>("Submarine/Build/SmallLocker.prefab");
+								//QModManager.Utility.Logger.Log(QModManager.Utility.Logger.Level.Warn, "InLine CreateButton Prefab - DEV Step 02");
+									//Mod.PrintObject(smallLocker, "asdf1234"); //Thats the Problem for the Null Reference Error
+								QModManager.Utility.Logger.Log(QModManager.Utility.Logger.Level.Warn, "InLine CreateButton Prefab - DEV Step 02-01");
+				*/
+
+				var signInput = prefab.GetComponentInChildren<uGUI_SignInput>();
+				var original = signInput.transform.GetChild(1).gameObject.GetComponent<Button>();
+				buttonPrefab = GameObject.Instantiate(original);
+				var go = buttonPrefab.gameObject;
+				GameObject.DestroyImmediate(buttonPrefab);
+				buttonPrefab = go.AddComponent<Button>();
+				buttonPrefab.transition = original.transition;
+				buttonPrefab.targetGraphic = go.GetComponentInChildren<Image>();
+				buttonPrefab.colors = original.colors;
+				go.SetActive(true);
+			}
 		}
 
 		private static GameObject AddColorPicker(uGUI_SignInput __instance, string label, int xOffset, int pickerHeight)
